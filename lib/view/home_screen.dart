@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:api_app/model/user_model.dart';
 import 'package:api_app/res/constant/app_constant.dart';
 import 'package:api_app/res/constant/app_string.dart';
@@ -55,5 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     debugPrint(response.data.toString());
+    userModelList = userModelFromJson(jsonEncode((response.data)));
+    setState(() {});
+    debugPrint("userModelList------->${userModelList[0].name}");
   }
 }
