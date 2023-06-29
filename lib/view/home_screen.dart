@@ -42,17 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getUserData() async {
     Response response;
-    //response = await dio.get('${AppConstant.baseUrl}/users?id=1');
+    //response = await dio.get('${AppConstant.baseUrl}/users?id=1&id=2');//endpoint?parameter&second parameter&thirdparameter
+
     //debugPrint(response.data.toString());
     // The below request is the same as above.
 
     ///OR
     response = await dio.get(
       '${AppConstant.baseUrl}/users',
-      // queryParameters: {'id': 1},
+      //queryParameters: {'id': 2},
       //options: Options(headers: {
       // "x-api-key": "token",
-      //"Authorization": " Bearar put token",
+      //"Authorization": " Bearar putToken",
       // })
     );
 
