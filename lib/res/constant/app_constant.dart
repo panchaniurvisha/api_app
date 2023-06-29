@@ -1,4 +1,4 @@
 class AppConstant {
   ///Api config
-  static const api = "https://postman-rest-api-learner.glitch.me/";
+  static const String baseUrl = "https://jsonplaceholder.typicode.com";
 }

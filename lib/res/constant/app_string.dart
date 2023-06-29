@@ -1,3 +1,3 @@
-class AppStrings {
+class AppString {
   static const String appBarTitle = "HomeScreen";
 }
