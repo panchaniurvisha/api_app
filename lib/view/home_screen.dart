@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:api_app/model/user_model.dart';
-import 'package:api_app/res/constant/app_constant.dart';
 import 'package:api_app/res/constant/app_string.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import '../res/constant/app_constant.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,19 +25,45 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text(AppString.appBarTitle),
         actions: [
           IconButton(
-              onPressed: () => getUserData(), icon: const Icon(Icons.get_app))
+            icon: const Icon(Icons.more_vert),
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  Future.delayed(
+                    const Duration(seconds: 3),
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                  return AlertDialog(
+                    buttonPadding: EdgeInsets.only(bottom: 60),
+                    actions: [
+                      IconButton(
+                          onPressed: () => getUserData(),
+                          icon: const Icon(Icons.get_app)),
+                      IconButton(
+                          onPressed: () => postApiCall(),
+                          icon: const Icon(Icons.post_add)),
+                    ],
+                  );
+                }),
+          )
         ],
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => ListTile(
-          onTap: () {},
-          title: Text(userModelList[index].name ?? ""),
-          subtitle: Text(userModelList[index].email ?? ""),
-          leading: Text(userModelList[index].id.toString()),
-        ),
-        itemCount: userModelList.length,
-        padding: const EdgeInsets.all(15),
-      ),
+      body: userModelList.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) => ListTile(
+                onTap: () {},
+                title: Text(userModelList[index].name ?? ""),
+                subtitle: Text(userModelList[index].email ?? ""),
+                leading: Text(userModelList[index].id.toString()),
+              ),
+              itemCount: userModelList.length,
+              padding: const EdgeInsets.all(15),
+            ),
     );
   }
 
@@ -56,14 +83,38 @@ class _HomeScreenState extends State<HomeScreen> {
       //"Authorization": " Bearar putToken",
       // })
     );
-
-    debugPrint(response.data.toString());
-    userModelList = userModelFromJson(jsonEncode((response.data)));
-    setState(() {});
-    debugPrint("userModelList------->${userModelList[0].name}");
+    if (response.statusCode == 200) {
+      debugPrint("Status Code-->${response.statusCode}}");
+      debugPrint(response.data.toString());
+      userModelList = userModelFromJson(jsonEncode((response.data)));
+      setState(() {});
+      debugPrint("userModelList------->${userModelList[0].name}");
+    } else if (response.statusCode == 500) {
+      debugPrint("Server Not Connect");
+    }
   }
-}
 
+  postApiCall() async {
+    final FormData formData = FormData.fromMap(
+        {"name": "urvisha", "email": "urvisha1104@gmail.com", "id": "1"});
+
+    await dio
+        .post(
+      '${AppConstant.baseUrl}/posts',
+      data: formData,
+    )
+        .then((value) {
+      debugPrint("Value ---> $value");
+      debugPrint("Value ---> ${value.data.toString()}");
+      if (value.statusCode == 200) {
+        debugPrint("Status Code --> ${value.statusCode}");
+        //userModel = userModelFromJson(jsonEncode(value.data));
+        setState(() {});
+      } else if (value.statusCode == 500) {
+        debugPrint("Server Not Connect");
+      }
+    });
+  }
 /*import 'dart:convert';
 
 import 'package:api_ten/model/user_model.dart';
@@ -190,3 +241,4 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 }*/
+}
