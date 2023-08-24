@@ -94,6 +94,23 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+ /* postApiCall() async {
+    Response response;
+    response=await dio
+        .post(
+      '${AppConstant.baseUrl}/posts',
+     data: {"name": "urvisha", "email": "urvisha1104@gmail.com", "id": "1"}
+    );
+
+      debugPrint("Value ---> ${response.data.toString()}");
+      if (response.statusCode == 200) {
+        //userModelList = userModelFromJson(jsonEncode(value.data));
+        //setState(() {});
+      } else if (response.statusCode == 500) {
+        debugPrint("Server Not Connect");
+      }
+    }
+  }*/
   postApiCall() async {
     final FormData formData = FormData.fromMap(
         {"name": "urvisha", "email": "urvisha1104@gmail.com", "id": "1"});
@@ -109,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (value.statusCode == 200) {
         debugPrint("Status Code --> ${value.statusCode}");
         //userModel = userModelFromJson(jsonEncode(value.data));
-        setState(() {});
+        //setState(() {});
       } else if (value.statusCode == 500) {
         debugPrint("Server Not Connect");
       }
