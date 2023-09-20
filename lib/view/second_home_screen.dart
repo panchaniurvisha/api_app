@@ -16,7 +16,7 @@ class SecondHomeScreen extends StatefulWidget {
 
 class _SecondHomeScreenState extends State<SecondHomeScreen> {
   List<UserModelTwo> userModelList = [];
-  UserModelThree? userModel;
+  UserModelThree? userModelThree;
   final Dio dio = Dio();
   @override
   void initState() {
@@ -35,8 +35,8 @@ class _SecondHomeScreenState extends State<SecondHomeScreen> {
         ),
         body: Column(
           children: [
-            Text(userModel!.createdAt.toString()),
-            Text(userModel!.id.toString()),
+            Text("Page---${userModelThree!.page.toString() ?? ""}"),
+            Text("Job------${userModelThree!.totalPages.toString() ?? ""}"),
           ],
         )
 
@@ -71,22 +71,6 @@ class _SecondHomeScreenState extends State<SecondHomeScreen> {
       setState(() {});
     } else if (response.statusCode == 500) {
       debugPrint("Server Not Connect");
-    }
-  }
-
-  postApi() async {
-    final FormData formData =
-        FormData.fromMap({"name": "morpheus", "job": "leader"});
-    Response response;
-    response =
-        await dio.post("${AppConstant.baseUrlTwo}/api/users", data: formData);
-    if (response.statusCode == 200) {
-      debugPrint("Response----->${response.data.toString()}");
-      userModel != userModelThreeFromJson(jsonEncode(response.data));
-      debugPrint("userModel--->$userModel");
-      setState(() {});
-    } else if (response.statusCode == 500) {
-      debugPrint("Server Not Found");
     }
   }
 }
