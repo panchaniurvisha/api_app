@@ -21,8 +21,8 @@ class _SecondHomeScreenState extends State<SecondHomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    //getApi();
-    postApi();
+    getApi();
+    //postApi();
     super.initState();
   }
 
